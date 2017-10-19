@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>CheckConsolidate</id>
+    <version>1.0.0</version>
+    <title>CheckConsolidate</title>
+    <authors>Terje Sandstrom</authors>
+    <owners>Terje Sandstrom, Kim Vedvik</owners>
+    <licenseUrl></licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Executable checking nuget packages in solution for consolidation</description>
+    <releaseNotes>Initial release</releaseNotes>
+    <copyright>Copyright Terje Sandstrom, Kim Vedvik, 2017</copyright>
+    </metadata>
+    <files>
+       <file src="CheckConsolidate/bin/release/" target="tools" /> 
+    </files>
+</package>
