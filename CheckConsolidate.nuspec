@@ -1,20 +1,25 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>CheckConsolidate</id>
+    <id>KDISim.CheckConsolidate</id>
     <version>1.0.0</version>
     <title>CheckConsolidate</title>
     <authors>Terje Sandstrom</authors>
     <owners>Terje Sandstrom, Kim Vedvik</owners>
-    <licenseUrl></licenseUrl>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
-    <iconUrl></iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/KDISim/CheckConsolidate/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/KDISim/CheckConsolidate</projectUrl>
+   
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Executable checking nuget packages in solution for consolidation</description>
     <releaseNotes>Initial release</releaseNotes>
     <copyright>Copyright Terje Sandstrom, Kim Vedvik, 2017</copyright>
     </metadata>
     <files>
-       <file src="CheckConsolidate/bin/release/" target="tools" /> 
+       <file src="CheckConsolidate/bin/release/CheckConsolidate.exe" target="tools" />
+        <file src="CheckConsolidate/bin/release/System.ValueTuple.dll" target="tools" />
+        <file src="CheckConsolidate/bin/release/WrapThat.System.dll" target="tools" />
+        <file src="License.md" target="tools" />
+        <file src="3rdparty.md" target="tools" />
+    
     </files>
 </package>
