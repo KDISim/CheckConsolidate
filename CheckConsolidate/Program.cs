@@ -8,8 +8,18 @@ namespace CheckConsolidate
     {
         public static int Main(string[] args)
         {
-            bool concise=!(args.Length == 1 && args[0] == "-s");
-
+            bool concise = false;
+            bool reportOnly = false;
+            if (args.Length > 0)
+            {
+                foreach (var arg in args)
+                {
+                    if (arg == "-s")
+                        concise = true;
+                    if (arg == "-r")
+                        reportOnly = true;
+                }
+            }
             var dirpath = System.IO.Directory.GetCurrentDirectory();
             var scanner = new Scanner(dirpath);
             var res = scanner.FindPackages();
@@ -35,7 +45,7 @@ namespace CheckConsolidate
                     Console.WriteLine(issue);
                 }
             }
-            return analyzer.Count ;
+            return reportOnly ? 0 : analyzer.Count;
         }
     }
 }

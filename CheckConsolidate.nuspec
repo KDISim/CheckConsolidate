@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>KDISim.CheckConsolidate</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>CheckConsolidate</title>
     <authors>Terje Sandstrom</authors>
     <owners>Terje Sandstrom, Kim Vedvik</owners>
