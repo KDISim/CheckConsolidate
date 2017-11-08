@@ -50,9 +50,16 @@ namespace CheckConsolidate
         public (string Name, string Version) Parse(string packagename)
         {
             var split = packagename.Split('.').ToList();
+            int m = split.Count;
             int n = split.FindIndex(IsDigitsOnly);
             if (n == -1) // not found
                 return (packagename, "");
+            int vFields = m - n;
+            if (vFields > 4)
+            {
+                n += (vFields - 4);
+            }
+          
             string name = string.Join(".", split.Take(n));
             string version = string.Join(".", split.Skip(n));
             return (name, version);

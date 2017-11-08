@@ -12,6 +12,7 @@ namespace CheckConsolidateTests
 {
     public class ScannerTests
     {
+        [TestCase("Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.11.0.50727", "Microsoft.VisualStudio.TextTemplating.Interfaces.11","0.11.0.50727")]
         [TestCase("MyTool.Sys", "MyTool.Sys", "")]
         [TestCase("NUnit3TestAdapter.3.8.1-debug03-dbg", "NUnit3TestAdapter", "3.8.1-debug03-dbg")]
         [TestCase("System.Reflection.TypeExtensions.4.3.0", "System.Reflection.TypeExtensions", "4.3.0")]

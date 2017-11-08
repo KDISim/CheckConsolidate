@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>KDISim.CheckConsolidate</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>CheckConsolidate</title>
     <authors>Terje Sandstrom</authors>
     <owners>Terje Sandstrom, Kim Vedvik</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/KDISim/CheckConsolidate</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Executable checking nuget packages in solution for consolidation</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Handles packages with numbers in their end, like the MS TextTemplate packages</releaseNotes>
     <copyright>Copyright Terje Sandstrom, Kim Vedvik, 2017</copyright>
     </metadata>
     <files>
