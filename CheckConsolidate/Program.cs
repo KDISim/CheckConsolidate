@@ -23,6 +23,17 @@ namespace CheckConsolidate
             var dirpath = System.IO.Directory.GetCurrentDirectory();
             var scanner = new Scanner(dirpath);
             var res = scanner.FindPackages();
+            if (res == null)
+            {
+                if (scanner.Status == -1)
+                {
+                    Console.WriteLine($"No packages folder found. All projects may be using PackageReferences.");
+                    return 0;
+                }
+                Console.WriteLine($"No packages returned. Failure in detection");
+                return -1;
+
+            }
             var analyzer = new Analyzer(res);
 
             if (analyzer.AllFine)

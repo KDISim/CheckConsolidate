@@ -20,7 +20,7 @@ namespace CheckConsolidateTests
             var dir = Substitute.For<IDirectory>();
             dir.GetDirectories(Arg.Any<string>()).Returns(packages);
             var scanner = new Scanner("whatever", dir);
-
+            dir.Exists(Arg.Any<string>()).Returns(true);
             var res = scanner.FindPackages().ToList();
 
             var analyzer = new Analyzer(res);
@@ -32,11 +32,14 @@ namespace CheckConsolidateTests
             var consWithVersions = analyzer.PackagesAndVersionsNeedingConsolidation.ToList();
             Assert.That(consWithVersions.Count, Is.EqualTo(1));
             var cons = consWithVersions.First();
-            Assert.That(cons.Contains("3.8.1"));
-            Assert.That(cons.Contains("3.8.0"));
-            Assert.That(cons.Contains("debug03"));
-            Assert.That(cons.Contains("NUnit3TestAdapter"));
-            Assert.That(analyzer.Count,Is.EqualTo(1));
+            Assert.Multiple(() =>
+            {
+                Assert.That(cons.Contains("3.8.1"));
+                Assert.That(cons.Contains("3.8.0"));
+                Assert.That(cons.Contains("debug03"));
+                Assert.That(cons.Contains("NUnit3TestAdapter"));
+                Assert.That(analyzer.Count, Is.EqualTo(1));
+            });
 
         }
 
@@ -52,6 +55,7 @@ namespace CheckConsolidateTests
             };
 
             var dir = Substitute.For<IDirectory>();
+            dir.Exists(Arg.Any<string>()).Returns(true);
             dir.GetDirectories(Arg.Any<string>()).Returns(packages);
             var scanner = new Scanner("whatever", dir);
 

@@ -11,16 +11,25 @@ namespace CheckConsolidate
         private IDirectory dir;
         private string directoryPath;
 
+        public int Status { get; private set; }
+
         public Scanner(string directoryPath, IDirectory pdir = null)
         {
             this.directoryPath = directoryPath;
 
             dir = pdir ?? new Directory();
+            Status = 0;
         }
 
         public IEnumerable<Package> FindPackages()
         {
             var packagePath = System.IO.Path.Combine(directoryPath, "packages");
+            if (!dir.Exists(packagePath))
+            {
+                Status = -1;
+                return null;
+            }
+
             var packages = dir.GetDirectories(packagePath);
             var list = new List<Package>();
             foreach (var package in packages)
@@ -43,6 +52,8 @@ namespace CheckConsolidate
 
 
             }
+
+            Status = 1;
             return list;
         }
 

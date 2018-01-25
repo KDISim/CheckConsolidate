@@ -42,11 +42,12 @@ namespace CheckConsolidateTests
             };
 
             var dir = Substitute.For<IDirectory>();
+            dir.Exists(Arg.Any<string>()).Returns(true);
             dir.GetDirectories(Arg.Any<string>()).Returns(packages);
             var scanner = new Scanner("whatever", dir);
 
             var res = scanner.FindPackages().ToList();
-
+            Assert.That(res, Is.Not.Null);
             Assert.That(res.Count, Is.EqualTo(3));
             var nunit = res.FirstOrDefault(o => o.Name.Contains("NUnit"));
             Assert.That(nunit.Versions.Count(),Is.EqualTo(3));
@@ -59,12 +60,19 @@ namespace CheckConsolidateTests
             var nunitversion = nunit.Versions.First();
             Assert.That(nunit.Name,Does.Not.EndWith("."));
             Assert.That(nunitversion,Does.Not.StartsWith("."));
+            Assert.That(scanner.Status, Is.EqualTo(1));
+        }
 
+        [Test]
+        public void ThatItDontCrashWhenNoPackagesDirectory()
+        {
+            var dir = Substitute.For<IDirectory>();
+            dir.Exists(Arg.Any<string>()).Returns(false);
+            var scanner = new Scanner("whatever", dir);
 
-
-
-
-
+            var res = scanner.FindPackages();
+            Assert.That(res,Is.Null);
+            Assert.That(scanner.Status,Is.EqualTo(-1));
         }
 
 
