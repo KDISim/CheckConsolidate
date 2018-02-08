@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CheckConsolidate;
 using NSubstitute;
 using NUnit.Framework;
@@ -8,6 +9,7 @@ namespace CheckConsolidateTests
 {
     public class AnalyzerTests
     {
+        private static readonly IEnumerable<string> NoExclusions = new List<string>();
         [Test]
         public void ThatItFindsAllNotOk()
         {
@@ -16,14 +18,15 @@ namespace CheckConsolidateTests
                 "NUnit3TestAdapter.3.8.1-debug03-dbg", "NUnit3TestAdapter.3.8.1","NUnit3TestAdapter.3.8.1", "NUnit3TestAdapter.3.8.0",
                 "System.Reflection.TypeExtensions.4.3.0","MyTool.Is.Superb"
             };
-
+                
             var dir = Substitute.For<IDirectory>();
+            
             dir.GetDirectories(Arg.Any<string>()).Returns(packages);
             var scanner = new Scanner("whatever", dir);
             dir.Exists(Arg.Any<string>()).Returns(true);
             var res = scanner.FindPackages().ToList();
-
-            var analyzer = new Analyzer(res);
+            
+            var analyzer = new Analyzer(res, NoExclusions);
 
             Assert.That(analyzer.AllFine,Is.False);
 
@@ -55,14 +58,39 @@ namespace CheckConsolidateTests
             };
 
             var dir = Substitute.For<IDirectory>();
+            
             dir.Exists(Arg.Any<string>()).Returns(true);
             dir.GetDirectories(Arg.Any<string>()).Returns(packages);
             var scanner = new Scanner("whatever", dir);
-
+            
             var res = scanner.FindPackages().ToList();
 
-            var analyzer = new Analyzer(res);
+            var analyzer = new Analyzer(res, NoExclusions);
 
+            Assert.That(analyzer.AllFine, Is.True);
+        }
+        
+        [Test]
+        public void ThatItExcludes()
+        {
+            var packages = new[]
+            {
+                "NUnit3TestAdapter.3.8.1-debug03-dbg", "NUnit3TestAdapter.3.8.1","NUnit3TestAdapter.3.8.1", "NUnit3TestAdapter.3.8.0",
+                "System.Reflection.TypeExtensions.4.3.0","MyTool.Is.Superb"
+            };
+                
+            var dir = Substitute.For<IDirectory>();
+            var exclusions = new List<string>();
+            
+            exclusions.Add("NUnit3TestAdapter");
+            
+            dir.GetDirectories(Arg.Any<string>()).Returns(packages);
+            var scanner = new Scanner("whatever", dir);
+            dir.Exists(Arg.Any<string>()).Returns(true);
+            var res = scanner.FindPackages().ToList();
+
+            var analyzer = new Analyzer(res, exclusions);
+           
             Assert.That(analyzer.AllFine, Is.True);
         }
 

@@ -23,18 +23,18 @@ namespace CheckConsolidate
 
         public IEnumerable<Package> FindPackages()
         {
-            var packagePath = System.IO.Path.Combine(directoryPath, "packages");
-            if (!dir.Exists(packagePath))
+            if (!dir.Exists(directoryPath))
             {
                 Status = -1;
                 return null;
             }
 
-            var packages = dir.GetDirectories(packagePath);
+            var packages = dir.GetDirectories(directoryPath);
             var list = new List<Package>();
             foreach (var package in packages)
             {
                 var p = new Package(Parse(package).ToTuple());
+                
                 var e = list.FirstOrDefault(m => m.Name == p.Name);
                 if (e != null)
                 {
@@ -42,15 +42,11 @@ namespace CheckConsolidate
                     var v = e.Versions.FirstOrDefault(o => o == pv);
                     if (v == null)
                         e.AddVersion(pv);
-
                 }
                 else
                 {
                     list.Add(p);
                 }
-
-
-
             }
 
             Status = 1;
@@ -60,6 +56,11 @@ namespace CheckConsolidate
 
         public (string Name, string Version) Parse(string packagename)
         {
+            if (packagename.Contains("\\"))
+            {
+                packagename = packagename.Substring(packagename.LastIndexOf('\\')+1);
+            }
+            
             var split = packagename.Split('.').ToList();
             int m = split.Count;
             int n = split.FindIndex(IsDigitsOnly);

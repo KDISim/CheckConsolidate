@@ -16,9 +16,9 @@ namespace CheckConsolidateTests
         [TestCase("MyTool.Sys", "MyTool.Sys", "")]
         [TestCase("NUnit3TestAdapter.3.8.1-debug03-dbg", "NUnit3TestAdapter", "3.8.1-debug03-dbg")]
         [TestCase("System.Reflection.TypeExtensions.4.3.0", "System.Reflection.TypeExtensions", "4.3.0")]
+        [TestCase(@"c:\some\dir\packages\System.Reflection.TypeExtensions.4.3.0", "System.Reflection.TypeExtensions", "4.3.0")]
         public void ThatParsingWorks(string fullname, string expectedname, string expectedversion)
         {
-
             var scanner = new Scanner("whatever");
 
             var res = scanner.Parse(fullname);
@@ -31,6 +31,7 @@ namespace CheckConsolidateTests
 
 
         }
+        
 
         [Test]
         public void ThatPackagingWorks()
@@ -44,6 +45,7 @@ namespace CheckConsolidateTests
             var dir = Substitute.For<IDirectory>();
             dir.Exists(Arg.Any<string>()).Returns(true);
             dir.GetDirectories(Arg.Any<string>()).Returns(packages);
+            
             var scanner = new Scanner("whatever", dir);
 
             var res = scanner.FindPackages().ToList();
@@ -67,6 +69,7 @@ namespace CheckConsolidateTests
         public void ThatItDontCrashWhenNoPackagesDirectory()
         {
             var dir = Substitute.For<IDirectory>();
+            
             dir.Exists(Arg.Any<string>()).Returns(false);
             var scanner = new Scanner("whatever", dir);
 

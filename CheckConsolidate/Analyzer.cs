@@ -1,30 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CheckConsolidate
 {
     public class Analyzer
     {
-        private readonly IEnumerable<Package> packages;
+        private readonly IEnumerable<Package> allPackages;
+        private readonly IEnumerable<string> exclusions;
 
-        public Analyzer(IEnumerable<Package> packages)
+        public Analyzer(IEnumerable<Package> allPackages, IEnumerable<string> exclusions)
         {
-            this.packages = packages;
+            this.allPackages = allPackages;
+            this.exclusions = exclusions;
         }
 
-        public bool AllFine => packages.All(o => o.Ok);
+        private IEnumerable<Package> PackagesToAnalyze => allPackages.Where(p => !p.Ok).Where(p => !Exclude(p));
 
-        public IEnumerable<string> PackagesNeedingConsolidation => packages.Where(o => !o.Ok).Select(m => m.Name);
+        public bool AllFine => PackagesToAnalyze.All(o => o.Ok);
+        
 
-        public IEnumerable<string> PackagesAndVersionsNeedingConsolidation
+        public IEnumerable<string> PackagesNeedingConsolidation => PackagesToAnalyze.Select(m => m.Name);
+
+        public IEnumerable<string> PackagesAndVersionsNeedingConsolidation => PackagesToAnalyze.Select(ToConsolidateString);
+
+        private bool Exclude(Package package)
         {
-            get
-            {
-                var consolidates = packages.Where(o => !o.Ok);
-                return consolidates.Select(p => p.Name + ": " + string.Join("; ", p.Versions)).ToList();
-            }
+            return exclusions.Any(e => e.Equals(package.Name, StringComparison.OrdinalIgnoreCase));
         }
 
-        public int Count => packages.Count(o => !o.Ok);
+        private string ToConsolidateString(Package package)
+        {
+            return package.Name + ": " + string.Join("; ", package.Versions);
+        }
+
+        public int Count => allPackages.Count(o => !o.Ok);
     }
 }
