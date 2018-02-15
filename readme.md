@@ -22,7 +22,12 @@ Add it to your build by using  the Command Line task
 
 
 ### Options
+| Short notation | Long notation | Description                                                                                                             |
+| -------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| -?, -h         | --help        | Show help text.                                                                                                         |
+| -d             | --directory   | Path to the packages folder to scan. Default value is <working directory>\packages.                                     |
+| -s             | --strict      | Enable strict mode.                                                                                                     |
+| -r             | --reportOnly  | Only report consolidation issues but don't fail. Doesn't trigger yellow build in TFS/VSTS builds.  Exit code always = 0 |
+| -e             | --exclude     | Exclude a package id from the consolidation checks (can be specified multiple times).                                   |
+| -v             | --verbose     | Enable verbose logging.                                                                                                 |
 
--s   Enable short notation,  default is long notation with more information
-
--r   ReportOnly,  doesn't trigger yellow build in TFS/VSTS builds.  Exit code always = 0.
