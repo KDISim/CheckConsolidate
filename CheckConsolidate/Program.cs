@@ -6,7 +6,7 @@ namespace CheckConsolidate
 {
     public static class Program
     {
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
             var app = new CommandLineApplication
             {
@@ -69,9 +69,8 @@ namespace CheckConsolidate
                         return 0;
                     }
 
-                    Console.WriteLine($"No packages returned. Failure in detection");
+                    Console.Error.WriteLine($"No packages returned. Failure in detection");
                     return -1;
-
                 }
 
                 var analyzer = new Analyzer(res, excludeOption.Values);
@@ -82,19 +81,23 @@ namespace CheckConsolidate
                     return 0;
                 }
 
-                Console.WriteLine("The following packages needs consolidation:");
+                (reportOption.HasValue() ? Console.Out
+                                         : Console.Error).WriteLine("The following packages needs consolidation:");
+
                 if (strictOption.HasValue())
                 {
                     foreach (var issue in analyzer.PackagesNeedingConsolidation)
                     {
-                        Console.WriteLine(issue);
+                        (reportOption.HasValue() ? Console.Out
+                                                 : Console.Error).WriteLine(issue);
                     }
                 }
                 else
                 {
                     foreach (var issue in analyzer.PackagesAndVersionsNeedingConsolidation)
                     {
-                        Console.WriteLine(issue);
+                        (reportOption.HasValue() ? Console.Out
+                                                 : Console.Error).WriteLine(issue);
                     }
                 }
 
@@ -103,11 +106,12 @@ namespace CheckConsolidate
 
             try
             {
-                app.Execute(args);
+                return app.Execute(args);
             }
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
+                return -1;
             }
         }
     }
