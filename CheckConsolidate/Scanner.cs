@@ -8,8 +8,8 @@ namespace CheckConsolidate
     public class Scanner
     {
 
-        private IDirectory dir;
-        private string directoryPath;
+        private readonly IDirectory dir;
+        private readonly string directoryPath;
 
         public int Status { get; private set; }
 
@@ -54,18 +54,18 @@ namespace CheckConsolidate
         }
 
 
-        public (string Name, string Version) Parse(string packagename)
+        public (string Name, string Version) Parse(string packageName)
         {
-            if (packagename.Contains("\\"))
+            if (packageName.Contains("\\"))
             {
-                packagename = packagename.Substring(packagename.LastIndexOf('\\')+1);
+                packageName = packageName.Substring(packageName.LastIndexOf('\\')+1);
             }
             
-            var split = packagename.Split('.').ToList();
+            var split = packageName.Split('.').ToList();
             int m = split.Count;
             int n = split.FindIndex(IsDigitsOnly);
             if (n == -1) // not found
-                return (packagename, "");
+                return (packageName, "");
             int vFields = m - n;
             if (vFields > 4)
             {
@@ -76,6 +76,7 @@ namespace CheckConsolidate
             string version = string.Join(".", split.Skip(n));
             return (name, version);
         }
-        static bool IsDigitsOnly(string str) => str.All(ch => ch >= '0' && ch <= '9');
+
+        private static bool IsDigitsOnly(string str) => str.All(ch => ch >= '0' && ch <= '9');
     }
 }

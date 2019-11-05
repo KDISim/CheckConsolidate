@@ -49,17 +49,9 @@ namespace CheckConsolidate
                 }
                 var defaultDirPath = Path.Combine(Directory.GetCurrentDirectory(), "packages");
 
-                string dirpath;
-                if (directoryOption.HasValue())
-                {
-                    dirpath = directoryOption.Value();
-                }
-                else
-                {
-                    dirpath = defaultDirPath;
-                }
+                var dirPath = directoryOption.HasValue() ? directoryOption.Value() : defaultDirPath;
                 
-                var scanner = new Scanner(dirpath);
+                var scanner = new Scanner(dirPath);
                 var res = scanner.FindPackages();
                 if (res == null)
                 {
